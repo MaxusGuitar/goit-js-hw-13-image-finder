@@ -19,15 +19,20 @@ button {
   background-color: #1f22e2;
 }
 
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
 #cover,
 .show {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
+  justify-content: center;
+  margin-top: 100px;
   width: 550px;
   padding: 35px;
-  margin: -83px auto 0 auto;
+  margin-left: auto;
+  margin-right: auto;
   background-color: #1f22e2;
   border-radius: 20px;
   box-shadow: 0 10px 40px #1f22e2, 0 0 0 20px #ffffffeb;
@@ -137,6 +142,58 @@ button span:after {
 }
 
 .show {
-  margin-top: 100px;
-  font-size: 30px;
+  font-size: 35px;
+}
+
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0;
+}
+
+.photo-card img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  transition: transform var(--animation-duration) var(--timing-function);
+}
+
+.photo-card {
+  padding: 5px;
+  margin: 15px;
+  width: calc((100% - 120px) / 4);
+  box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14),
+    0px 2px 1px -1px rgba(0, 0, 0, 0.12);
+}
+
+.photo-card img {
+  display: block;
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.photo-card img:hover {
+  transform: scale(1.03);
+}
+
+.photo-card:nth-child(4n) {
+  margin-right: 0;
+}
+
+.stats {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.stats-item {
+  text-align: center;
+  margin-right: 5px;
+  margin-left: 5px;
+}
+
+.material-icons {
+  display: flex;
+  justify-content: center;
 }
