@@ -15,32 +15,25 @@ const loadMoreBtn = new LoadMoreBtn({
 
 refs.searchform.addEventListener('submit', onSearch)
 //refs.loadBut.addEventListener('click', onLoad)
-loadMoreBtn.refs.button.addEventListener('click', onLoad)
+loadMoreBtn.refs.button.addEventListener('click', btnDisEn)
 
 function onSearch(e) {
     e.preventDefault()
+    apiService.query = e.currentTarget.elements.query.value
 
     loadMoreBtn.show() // показывается текст загрузки кнопки
-    loadMoreBtn.disable() //кнопка неактивна
-    
-    apiService.query = e.currentTarget.elements.query.value
     apiService.resetPage()
-    apiService.fetchArticles()
-        .then(f => {
-            clearPhotoCard() // очищает стр после каждого нового запроса
-            addPhotos(f)
-        })
-    loadMoreBtn.enable() // после результата запроса кнопка снова активна
+    clearPhotoCard() // очищает стр после каждого нового запроса
+    btnDisEn()
 }
 
-function onLoad() {
+function btnDisEn() {
     loadMoreBtn.disable() //кнопка неактивна
     apiService.fetchArticles()
         .then(f => {
             addPhotos(f)
             loadMoreBtn.enable() // после результата запроса кнопка снова активна
         })
-    
 }
 
 function addPhotos(hits) {
