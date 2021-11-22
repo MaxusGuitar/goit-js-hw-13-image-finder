@@ -2,6 +2,7 @@ import './sass/main.scss';
 import ApiService from './apiService';
 import photos from './templates/photos.hbs'
 import LoadMoreBtn from './loadmore.js'
+import { Notify } from 'notiflix';
 
 const refs = {
     searchform: document.querySelector('.search'),
@@ -33,6 +34,9 @@ function btnDisEn() {
         .then(f => {
             addPhotos(f)
             loadMoreBtn.enable() // после результата запроса кнопка снова активна
+            Notify.success(`Everything works!`)
+        }).catch(() => {
+            Notify.failure(`We're sorry, but you've reached the end of search results.`)
         })
 }
 

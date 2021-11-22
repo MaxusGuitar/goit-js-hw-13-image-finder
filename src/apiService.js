@@ -4,10 +4,10 @@ export default class ApiService {
         this.page = 1 // переменная для увелечения обьектов поиска на стр
     }
 
-    fetchArticles() {
+    async  fetchArticles() {
         
-        return fetch(`https://pixabay.com/api/?image_type=photo&orientation=horizontal&q=${this.querySearch}
-        &page=${this.page}&per_page=12&key=24079663-849aadf309a059b421030ae2f`)
+        return await fetch(`https://pixabay.com/api/?image_type=photo&orientation=horizontal&q=${this.querySearch}
+        &page=${this.page}&per_page=40&key=24079663-849aadf309a059b421030ae2f`)
         .then(a => a.json())
         .then(n => { 
             this.plusPage()
