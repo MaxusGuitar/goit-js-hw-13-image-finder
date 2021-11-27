@@ -26,12 +26,13 @@ export default class ApiService {
     minusPage() {
         this.page -=1
     }
-    // get query() {
-    // return this.querySearch
-    // }
     
-    // set query(newQuery) {
-    //     this.querySearch = newQuery // записывается в индекс
-    // }
+    get query() {
+    return this.querySearch
+    }
+    
+    set query(newQuery) {
+        this.querySearch = newQuery // записывается в индекс
+    }
 }
 

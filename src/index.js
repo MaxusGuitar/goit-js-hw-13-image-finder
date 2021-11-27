@@ -23,11 +23,11 @@ async function onSearch(e) {
     apiService.query = e.currentTarget.elements.query.value
 
     const good = await apiService.fetchArticles()
-    const totalHitss = good.data.totalHits
+    const totalHits = good.data.totalHits
     const hitsLength = good.data.hits.length
     
     
-    if (totalHitss < 1) {
+    if (totalHits < 1) {
         Notify.failure("Sorry, there are no images matching your search query. Please try again.");
         return;
     }
@@ -35,8 +35,9 @@ async function onSearch(e) {
         Notify.warning('Enter your serch query, please :)');
         return;
     } else {
-        Notify.success(`We found ${totalHitss} images.`);
+        Notify.success(`We found ${totalHits} images.`);
         clearPhotoCard() // очищает стр после каждого нового запроса
+        loadMoreBtn.disable()
     }
 
    // loadMoreBtn.show() // показывается текст загрузки кнопки
@@ -44,22 +45,27 @@ async function onSearch(e) {
     apiService.fetchArticles().then(renderPosts)
     loadMoreBtn.show()
     loadMoreBtn.enable()
+    
 
      if (hitsLength < 40) {
         loadMoreBtn.hide()
         Notify.info("We're sorry, but you've reached the end of search results.");
     }
-   // clearPhotoCard() // очищает стр после каждого нового запроса
+    
+    clearPhotoCard() // очищает стр после каждого нового запроса
+    
     //btnDisEn()
 }
 
 async function btnDisEn() {
+    
     if (apiService.page  !== 2) {
         apiService.minusPage();
     }
 
     //loadMoreBtn.disable() //кнопка неактивна
     apiService.fetchArticles().then(renderPosts)
+    
     const good = await apiService.fetchArticles(); 
     const hitsLength = good.data.hits.length;  
     if (hitsLength < 40) {
@@ -109,9 +115,9 @@ function renderPosts(i) {
           loadMoreBtn.show()
     }
 
-function addPhotos(hits) {
-    refs.photosCard.insertAdjacentHTML('beforeend', photos(hits))
-}
+// function addPhotos(hits) {
+//     refs.photosCard.insertAdjacentHTML('beforeend', photos(hits))
+// }
 
 function clearPhotoCard() {
     refs.photosCard.innerHTML = '' // для очищения результата запроса на стр
