@@ -23,11 +23,11 @@ async function onSearch(e) {
     apiService.query = e.currentTarget.elements.query.value
 
     const good = await apiService.fetchArticles()
-    const totalHits = good.data.totalHits
+    const totalHitss = good.data.totalHits
     const hitsLength = good.data.hits.length
     
     
-    if (totalHits < 1) {
+    if (totalHitss < 1) {
         Notify.failure("Sorry, there are no images matching your search query. Please try again.");
         return;
     }
@@ -35,35 +35,79 @@ async function onSearch(e) {
         Notify.warning('Enter your serch query, please :)');
         return;
     } else {
-        Notify.success(`We found ${totalHits} images.`);
+        Notify.success(`We found ${totalHitss} images.`);
         clearPhotoCard() // очищает стр после каждого нового запроса
     }
 
    // loadMoreBtn.show() // показывается текст загрузки кнопки
     apiService.resetPage()
-    apiService.fetchArticles().then(photos)
+    apiService.fetchArticles().then(renderPosts)
     loadMoreBtn.show()
     loadMoreBtn.enable()
 
      if (hitsLength < 40) {
-        loadMoreBtn.hide();
+        loadMoreBtn.hide()
         Notify.info("We're sorry, but you've reached the end of search results.");
     }
    // clearPhotoCard() // очищает стр после каждого нового запроса
     //btnDisEn()
 }
 
-function btnDisEn() {
-    loadMoreBtn.disable() //кнопка неактивна
-    apiService.fetchArticles()
-        .then(f => {
-            addPhotos(f)
-            loadMoreBtn.enable() // после результата запроса кнопка снова активна
-            Notify.success(`Everything works!`)
-        }).catch(() => {
-            Notify.failure(`We're sorry, but you've reached the end of search results.`)
-        })
+async function btnDisEn() {
+    if (apiService.page  !== 2) {
+        apiService.minusPage();
+    }
+
+    //loadMoreBtn.disable() //кнопка неактивна
+    apiService.fetchArticles().then(renderPosts)
+    const good = await apiService.fetchArticles(); 
+    const hitsLength = good.data.hits.length;  
+    if (hitsLength < 40) {
+        loadMoreBtn.hide()
+        Notify.info("We're sorry, but you've reached the end of search results.");
+    }
+        // .then(f => {
+        //     addPhotos(f)
+        //     loadMoreBtn.enable() // после результата запроса кнопка снова активна
+        //     Notify.success(`Everything works!`)
+        // }).catch(() => {
+        //     Notify.failure(`We're sorry, but you've reached the end of search results.`)
+        // })
+    
 }
+
+function renderPosts(i) {
+        const markup = 
+        i.data.hits
+    .map(({webformatURL,tags,likes,views,comments,downloads}) => {
+        return `<div class="photo-card">
+    <img src="${webformatURL}" alt="${tags}" />
+
+    <div class="stats">
+        <p class="stats-item">
+            <i class="material-icons">thumb_up</i>
+            ${likes}
+        </p>
+        <p class="stats-item">
+            <i class="material-icons">visibility</i>
+            ${views}
+        </p>
+        <p class="stats-item">
+            <i class="material-icons">comment</i>
+            ${comments}
+        </p>
+        <p class="stats-item">
+            <i class="material-icons">cloud_download</i>
+            ${downloads}
+        </p>
+    </div>
+</div>`;
+          })
+          .join("")
+          refs.photosCard.insertAdjacentHTML('beforeend', markup)
+          
+          loadMoreBtn.show()
+    }
 
 function addPhotos(hits) {
     refs.photosCard.insertAdjacentHTML('beforeend', photos(hits))

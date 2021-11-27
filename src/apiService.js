@@ -23,6 +23,9 @@ export default class ApiService {
         this.page = 1 // для сброса стр при новом поиске
     }
     
+    minusPage() {
+        this.page -=1
+    }
     // get query() {
     // return this.querySearch
     // }
