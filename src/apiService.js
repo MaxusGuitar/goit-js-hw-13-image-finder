@@ -1,18 +1,18 @@
+import axios from "axios"
+
 export default class ApiService {
     constructor() {
         this.querySearch = '' // главная переменная для поиска
         this.page = 1 // переменная для увелечения обьектов поиска на стр
     }
 
-    async  fetchArticles() {
+    async fetchArticles() {
+        const BASE_URL = 'https://pixabay.com'
+        const KEY = '24079663-849aadf309a059b421030ae2f'
+        const getImage = await axios.get(`${BASE_URL}/api/?key=${KEY}&q=${this.querySearch}&image_type=photo&orientation=horizontal&safesearch=true&page=${this.page}&per_page=40`)
+        this.plusPage()
         
-        return await fetch(`https://pixabay.com/api/?image_type=photo&orientation=horizontal&q=${this.querySearch}
-        &page=${this.page}&per_page=40&key=24079663-849aadf309a059b421030ae2f`)
-        .then(a => a.json())
-        .then(n => { 
-            this.plusPage()
-            return n.hits
-                    })
+        return getImage
     }
 
     plusPage() {
@@ -23,12 +23,12 @@ export default class ApiService {
         this.page = 1 // для сброса стр при новом поиске
     }
     
-    get query() {
-    return this.querySearch
-    }
+    // get query() {
+    // return this.querySearch
+    // }
     
-    set query(newQuery) {
-        this.querySearch = newQuery // записывается в индекс
-    }
+    // set query(newQuery) {
+    //     this.querySearch = newQuery // записывается в индекс
+    // }
 }
 
